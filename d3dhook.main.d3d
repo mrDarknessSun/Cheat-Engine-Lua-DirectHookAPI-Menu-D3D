@@ -1,0 +1,152 @@
+
+
+
+dofile(TrainerOrigin..[[\dwBindColor.h]])
+background=createPicture()
+bmp=picture_getBitmap(background)
+p=createPicture()
+background.loadFromFile([[C:\Users\andri\Desktop\Files\Lua\LuaProject\ContainerBoxD3D.png]])
+t=d3dhook_createTexture(p)
+s=d3dhook_createSprite(t)
+s.x=600
+s.y=0
+graphic_setWidth(bmp,1)
+graphic_setHeight(bmp,1)
+c=rasterimage_getCanvas(bmp)
+canvas_setPixel(c,0,0,d3d_setColor1)
+highlighter=createPicture()
+bmp=picture_getBitmap(highlighter)
+graphic_setWidth(bmp,1)
+graphic_setHeight(bmp,1)
+c=rasterimage_getCanvas(bmp)
+canvas_setPixel(c,0,0,d3d_setColor2)
+d3dhook_initializeHook()
+bgtexture=d3dhook_createTexture(background)
+bgsprite=d3dhook_createSprite(bgtexture)
+d3dhook_renderobject_setY(bgsprite,40) -- Change Position Y Background Menu By Andriel.exe
+d3dhook_renderobject_setX(bgsprite,10) -- Change Position X Background Menu By Andriel.exe
+d3dhook_sprite_setWidth(bgsprite,120) -- Change Width Background Menu By Andriel.exe
+d3dhook_sprite_setHeight(bgsprite,120) -- Change Height Background Menu By Andriel.exe
+highlightertexture=d3dhook_createTexture(highlighter)
+hlsprite=d3dhook_createSprite(highlightertexture)
+d3dhook_renderobject_setVisible(hlsprite,false)
+d3dhook_renderobject_setX(hlsprite,-1)
+d3dhook_sprite_setWidth(hlsprite,300)
+font=createFont()
+--font.Color=clWhite Color determins by Andriel.exe mrDarknessSun
+-- font.Size=15 Font Dimension Size
+font.Quality = "fqProof"
+font.Size=8
+font.Color=setColorOptions_MenuBackground
+font.Style = "fsBold"
+fontmap = d3dhook_createFontmap(font)
+font_Options = createFont()
+font_Options.Size=7
+font_Options.Quality = "fqProof"
+font_Options.Color=setColorOptions_FunctionsKeyColor
+font_Options.Style = "fsBold"
+font_Options_Bitmap = d3dhook_createFontmap(font_Options)
+dofile(TrainerOrigin.."\\d3dBindPosition.lua")
+Option1=d3dhook_createTextContainer(fontmap,_XD3D_Text_MenuHackOptionX,_XD3D_TextMenuHackOptionY,_XD3D_TextMenuHackOptionText)
+d3dhook_renderobject_setVisible(Option1,true)
+lineheight = d3dhook_texture_getHeight(fontmap)
+d3dhook_sprite_setHeight(hlsprite,lineheight)
+Option1=d3dhook_createTextContainer(font_Options_Bitmap,_DirectXFontOption1_RenderStringOption1PosX,_DirectXFontOption1_RenderStringOption1PosY,_XD3D_TextDirectxInjectOption1String)
+
+Option2=d3dhook_createTextContainer(font_Options_Bitmap,_DirectXFontOption2_RenderStringOption2PosX,_DirectXFontOption2_RenderStringOption2PosY,_XD3D_TextDirectxInjectOption2String)
+
+Option3=d3dhook_createTextContainer(font_Options_Bitmap,_DirectXFontOption3_RenderStringOption3PosX,_DirectXFontOption3_RenderStringOption3PosY,_XD3D_TextDirectxInjectOption3String)
+Option1State=false
+Option2State=false
+Option3State=false
+selectedOption=1
+
+function setHighlighterToSelectedOption()
+    d3dhook_renderobject_setX(hlsprite,50+lineheight*(selectedOption-1))
+end 
+
+setHighlighterToSelectedOption()
+d3dhook_renderobject_setVisible(hlsprite,true)
+
+function executedSelectedOption()
+    local dwDirectxContainer_ON = "OFF"
+    local dwDirectxContainer_OFF = "ON"
+
+    if (selectedOption==1) then
+    Option1State=not Option1State 
+    if(Option1State) then -- GODMODE EXAMPLE CS SOURCE BY ANDRIEL.EXE mrDarknessSun
+        local mr = AddressList.getMemoryRecordByDescription("CS:Source Life")
+        mr.Value = 100
+        mr.Active = false
+        d3dhook_textcontainer_setText(Option1,"GOD : "..dwDirectxContainer_ON)
+    else
+        local mr = AddressList.getMemoryRecordByDescription("CS:Source Life")
+        mr.Value = 9999
+        mr.Active= true
+        d3dhook_textcontainer_setText(Option1,"GOD : "..dwDirectxContainer_OFF)
+    end
+end
+
+if (selectedOption==2) then
+    Option2State=not Option2State 
+    if(Option2State) then
+       --Code Here Enable : OFF By Andriel.exe mrDarknessSun
+        d3dhook_textcontainer_setText(Option2,"Ak47 : "..dwDirectxContainer_ON)
+    else
+        --Code Here Enable : ON By Andriel.exe mrDarknessSun
+        d3dhook_textcontainer_setText(Option2,"Ak47 : "..dwDirectxContainer_OFF)
+    end
+end
+
+
+if (selectedOption==3) then
+    Option3State=not Option3State 
+    if(Option3State) then
+        --Code Here Enable : OFF By Andriel.exe mrDarknessSun
+        d3dhook_textcontainer_setText(Option3,"JUMP : "..dwDirectxContainer_ON)
+    else
+                --Code Here Enable : ON By Andriel.exe mrDarknessSun
+        d3dhook_textcontainer_setText(Option3,"JUMP : "..dwDirectxContainer_OFF)
+    end
+end
+
+end
+
+function objectclick(object,x,y)
+    if (object==Option1) then
+    selectedOption=1
+    executedSelectedOption()
+end
+if (object==Option2) then
+    selectedOption=2
+    executedSelectedOption()
+end
+if (object==Option3) then
+    selectedOption=3
+    executedSelectedOption()
+end
+
+setHighlighterToSelectedOption()
+return true
+end
+
+function virtualkey(virtualkey,char)
+    if (virtualkey==VK_DOWN) then
+    if (selectedOption<3) then
+        selectedOption=selectedOption+1
+ end
+ end
+        if (virtualkey==VK_UP) then
+            if (selectedOption>1) then
+                selectedOption=selectedOption-1
+    end
+end
+
+ if (virtualkey==VK_RETURN) then
+    executedSelectedOption()
+ end
+end
+
+d3dhook_onClick(objectclick)
+d3dhook_onKey(virtualkey)
+
